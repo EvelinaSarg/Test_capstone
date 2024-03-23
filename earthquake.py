@@ -36,12 +36,7 @@ if st.button('Show Data'):
     df = pd.DataFrame(places)
     st.map(df)
 # Set up your database connection here
-db_user = 'de_evsa'
-db_password = 'guisities'
-db_host = 'data-sandbox.c1tykfvfhpit.eu-west-2.rds.amazonaws.com'
-db_port = 5432
-db_name = 'pagila'
-db_table = 'evsa_earthquakes'
+
 
 # Streamlit app title
 st.title('Earthquake Data Visualization')
