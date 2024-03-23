@@ -2,6 +2,8 @@
 import streamlit as st
 import requests
 import pandas as pd
+import matplotlib.pyplot as plt
+from sqlalchemy import create_engine
 
 # Streamlit app layout
 st.title('Earthquake Data Viewer')
@@ -33,3 +35,47 @@ if st.button('Show Data'):
     # Convert to DataFrame for Streamlit map
     df = pd.DataFrame(places)
     st.map(df)
+# Set up your database connection here
+db_user = 'de_evsa'
+db_password = 'guisities'
+db_host = 'data-sandbox.c1tykfvfhpit.eu-west-2.rds.amazonaws.com'
+db_port = 5432
+db_name = 'pagila'
+db_table = 'evsa_earthquakes'
+
+# Streamlit app title
+st.title('Earthquake Data Visualization')
+
+# Function to load data from the database
+def load_data():
+    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
+    query = f'SELECT * FROM {db_table}'  # Adjust the query to match your table structure
+    data = pd.read_sql(query, engine)
+    return data
+
+# Button to refresh data
+if st.button('Refresh Data'):
+    st.legacy_caching.clear_cache()  # Clear the Streamlit cache
+    data = load_data()  # Reload the data
+    st.experimental_rerun()  # Rerun the Streamlit app to update the plot
+
+# Load the data
+data = load_data()
+
+# Plot the data if it's loaded
+if not data.empty:
+    # Assuming 'date' and 'earthquakes' are columns in your table
+    fig, ax = plt.subplots()
+    ax.plot(data['date'], data['earthquakes'], marker='o')
+    ax.set_title('Number of Earthquakes Over Time')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Number of Earthquakes')
+    ax.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+else:
+    st.write('No data available to display.')
+
