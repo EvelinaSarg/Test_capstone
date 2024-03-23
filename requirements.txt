@@ -1,6 +1,4 @@
 pandas
 requests
-pymongo==3.11
 sqlalchemy 
 matplotlib
-psycopg2
