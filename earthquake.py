@@ -3,11 +3,13 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-import datetime
+from datetime import datetime
 
 # Streamlit app layout
 st.title('Earthquake Data Viewer')
 
+
+current_year = datetime.now().year
 # Date input
 start_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
 end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
