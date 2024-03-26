@@ -8,6 +8,8 @@ from datetime import datetime, timedelta #added
 import pydeck as pdk                                            
 
 st.title('Global Earthquake Activity Map')
+if 'df' not in st.session_state:
+    st.session_state.df = pd.DataFrame()
 # Date input
 start_date = datetime.now() - timedelta(days=1)
 end_date = datetime.now()
@@ -87,9 +89,8 @@ else:
 
 # Button to update the map based on new input
 if st.button('Update Map'):
-    if (end_date - start_date).days <= 50 and start_date!=end_date:
+    if (end_date - start_date).days <= 50 and start_date != end_date:
         data = get_data(start_date, end_date)
         earthquakes = extract_data(data)
-        df = pd.DataFrame(earthquakes)
-        render_map(df)  # Update and render the map based on the new input
-
+        st.session_state.df = pd.DataFrame(earthquakes)
+        render_map(st.session_state.df)
