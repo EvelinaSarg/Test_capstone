@@ -1,3 +1,4 @@
+
 import streamlit as st
 import requests
 import pandas as pd
@@ -10,6 +11,7 @@ st.title('Global Earthquake Activity Map')
 # Date input
 start_date = datetime.now() - timedelta(days=1)
 end_date = datetime.now()
+
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
@@ -35,7 +37,7 @@ def extract_data(data):
 # Function to render the map
 def render_map(df):
     if df.empty:
-        st.map(df) #added
+        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
@@ -73,20 +75,15 @@ def render_map(df):
     
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
 end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
-if start_date > end_date:
-    st.warning('Start date should be earlier than the end date.')
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-if end_date< start_day:
-    st.warning('End date should be later than the start date.')
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-if start_date==end_date:
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-    st.warning('No earthquake data available for the selected date range.')
-# Fetch data and prepare the map
-data = get_data(start_date, end_date)
-earthquakes = extract_data(data)
-df = pd.DataFrame(earthquakes)
-render_map(df)                           # Render the map on first load
+
+if (end_date - start_date).days > 50:
+    st.error('The date range must not exceed 50 days.')
+else:
+    # Fetch data and prepare the map
+    data = get_data(start_date, end_date)
+    earthquakes = extract_data(data)
+    df = pd.DataFrame(earthquakes)
+    render_map(df)                           # Render the map on first load
 
 # Button to update the map based on new input
 if st.button('Update Map'):
@@ -95,3 +92,44 @@ if st.button('Update Map'):
         earthquakes = extract_data(data)
         df = pd.DataFrame(earthquakes)
         render_map(df)  # Update and render the map based on the new input
+
+# Set up database connection
+db_user = st.secrets['DB_USER']
+db_password = st.secrets['DB_PASSWORD']
+db_host = st.secrets['DB_HOST']
+db_name = st.secrets['DB_NAME']
+db_table = st.secrets['DB_TABLE']
+db_port = st.secrets['DB_PORT']
+
+
+st.title('Trends in Earthquake Frequency')
+# Function to load data from the database
+def load_data():
+    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
+    query = f'SELECT * FROM {db_table}' 
+    data = pd.read_sql(query, engine)
+    return data
+
+# Load the data
+data = load_data()
+
+# Plot the data 
+if not data.empty:
+ 
+    fig, ax = plt.subplots()
+    ax.plot(data['date'], data['earthquakes'], marker='o')
+    ax.set_title('Number of Earthquakes Over Time')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Number of Earthquakes')
+    ax.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+else:
+    st.write('No data available to display.')
+# Button to refresh data
+if st.button('Refresh Data'):
+    st.experimental_rerun()  
+
