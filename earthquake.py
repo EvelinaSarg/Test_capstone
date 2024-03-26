@@ -34,6 +34,7 @@ def extract_data(data):
 # Function to render the map
 def render_map(df):
     if df.empty:
+        st.map(df) #added
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
