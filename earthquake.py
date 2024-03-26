@@ -95,3 +95,4 @@ if st.button('Update Map'):
         earthquakes = extract_data(data)
         df = pd.DataFrame(earthquakes)
         render_map(df)  # Update and render the map based on the new input
+
