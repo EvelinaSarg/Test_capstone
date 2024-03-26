@@ -10,15 +10,6 @@ st.title('Global Earthquake Activity Map')
 # Date input
 start_date = datetime.now() - timedelta(days=1)
 end_date = datetime.now()
-if start_date > end_date:
-    st.warning('Start date should be earlier than the end date.')
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-if end_date< start_day:
-    st.warning('End date should be later than the start date.')
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-if start_date==end_date:
-    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-    st.warning('No earthquake data available for the selected date range.')
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
@@ -78,6 +69,15 @@ def render_map(df):
     
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
 end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
+if start_date > end_date:
+    st.warning('Start date should be earlier than the end date.')
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+if end_date< start_day:
+    st.warning('End date should be later than the start date.')
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+if start_date==end_date:
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+    st.warning('No earthquake data available for the selected date range.')
 # Fetch data and prepare the map
 data = get_data(start_date, end_date)
 earthquakes = extract_data(data)
