@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import pydeck as pdk
-
+import numpy as np
 # Streamlit app layout
 st.title('Earthquake Data Viewer')
 
