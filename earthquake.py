@@ -75,7 +75,7 @@ end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(20
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
 if end_date<start_date:
-    st.warning("Start day can't be later than the end date.") #added to remove
+    st.warning("No data available.") #added to remove
 else:
     # Fetch data and prepare the map
     data = get_data(start_date, end_date)
