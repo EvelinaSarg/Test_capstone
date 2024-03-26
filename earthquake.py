@@ -11,8 +11,12 @@ st.title('Global Earthquake Activity Map')
 if 'df' not in st.session_state:
     st.session_state.df = pd.DataFrame()
 # Date input
-start_date = datetime.now() - timedelta(days=1)
-end_date = datetime.now()
+end_date = st.session_state.get('end_date', datetime.now())
+end_date = st.date_input('End date', value=end_date, min_value=datetime.now() - timedelta(days=365), max_value=datetime.now())
+st.session_state['end_date'] = end_date
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime.now() - timedelta(days=365), max_value=end_date)
+#start_date = datetime.now() - timedelta(days=1)
+#end_date = datetime.now()
 
 
 # Function to make API call and get data
