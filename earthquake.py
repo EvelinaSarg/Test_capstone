@@ -87,10 +87,4 @@ else:
     df = pd.DataFrame(earthquakes)
     render_map(df)                           # Render the map on first load
 
-# Button to update the map based on new input
-if st.button('Update Map'):
-    if (end_date - start_date).days <= 50 and start_date != end_date:
-        data = get_data(start_date, end_date)
-        earthquakes = extract_data(data)
-        st.session_state.df = pd.DataFrame(earthquakes)
-        render_map(st.session_state.df)
+
