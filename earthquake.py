@@ -8,16 +8,6 @@ from datetime import datetime, timedelta #added
 import pydeck as pdk                                            
 
 st.title('Global Earthquake Activity Map')
-if 'df' not in st.session_state:
-    st.session_state.df = pd.DataFrame()
-# Date input
-end_date = st.session_state.get('end_date', datetime.now())
-end_date = st.date_input('End date', value=end_date, min_value=datetime.now() - timedelta(days=365), max_value=datetime.now())
-st.session_state['end_date'] = end_date
-start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime.now() - timedelta(days=365), max_value=end_date)
-#start_date = datetime.now() - timedelta(days=1)
-#end_date = datetime.now()
-
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
@@ -79,8 +69,8 @@ def render_map(df):
     st.pydeck_chart(r)
     
     
-#start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
-#end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
+end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
 
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
