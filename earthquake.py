@@ -10,7 +10,15 @@ st.title('Global Earthquake Activity Map')
 # Date input
 start_date = datetime.now() - timedelta(days=1)
 end_date = datetime.now()
-
+if start_date > end_date:
+    st.warning('Start date should be earlier than the end date.')
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+if end_date< start_day:
+    st.warning('End date should be later than the start date.')
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+if start_date==end_date:
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+    st.warning('No earthquake data available for the selected date range.')
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
@@ -35,11 +43,6 @@ def extract_data(data):
 
 # Function to render the map
 def render_map(df):
-    if start_day>end_date:
-        st.warning('Start date should be earlier than the end date.')
-    if start_date==end_date:
-        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-        st.warning('No earthquake data available for the selected date range.')
     # Define the pydeck layer
     layer = pdk.Layer(
         "ScatterplotLayer",
