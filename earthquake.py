@@ -70,7 +70,7 @@ def render_map(df):
     
     
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1))
-end_date = st.date_input('End date', value=datetime.now(), max=datetime.now())
+end_date = st.date_input('End date', value=datetime.now())
 
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
