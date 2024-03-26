@@ -35,6 +35,11 @@ def extract_data(data):
 
 # Function to render the map
 def render_map(df):
+    if start_day>end_date:
+        st.warning('Start date should be earlier than the end date.')
+    if start_date==end_date:
+        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
+        st.warning('No earthquake data available for the selected date range.')
     # Define the pydeck layer
     layer = pdk.Layer(
         "ScatterplotLayer",
@@ -78,11 +83,6 @@ render_map(df)                           # Render the map on first load
 
 # Button to update the map based on new input
 if st.button('Update Map'):
-    if start_day>end_date:
-        st.warning('Start date should be earlier than the end date.')
-    if start_date==end_date:
-        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
-        st.warning('No earthquake data available for the selected date range.')
     if (end_date - start_date).days <= 50 and start_date!=end_date:
         data = get_data(start_date, end_date)
         earthquakes = extract_data(data)
