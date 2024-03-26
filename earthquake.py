@@ -58,6 +58,15 @@ if st.button('Show Map') and (end_date - start_date).days <= 50:
         auto_highlight=True,
     )
 
+    # Tooltip configuration for showing the magnitude on hover
+    tooltip = {
+        "html": "<b>Place:</b> {place} <br/> <b>Magnitude:</b> {magnitude}",
+        "style": {
+            "backgroundColor": "steelblue",
+            "color": "white"
+        }
+    }
+
     # Define the initial view state for pydeck
     view_state = pdk.ViewState(
         latitude=df['latitude'].mean(),
@@ -66,32 +75,13 @@ if st.button('Show Map') and (end_date - start_date).days <= 50:
         pitch=0,
     )
 
-# Define the pydeck layer with a tooltip
-tooltip = {
-    "html": "<b>Place:</b> {place} <br/> <b>Magnitude:</b> {magnitude}",
-    "style": {
-        "backgroundColor": "steelblue",
-        "color": "white"
-    }
-}
+    # Render the pydeck map with tooltip
+    r = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_style='mapbox://styles/mapbox/light-v9',
+        tooltip=tooltip
+    )
 
-# Define the initial view state for pydeck
-view_state = pdk.ViewState(
-    latitude=df['latitude'].mean(),
-    longitude=df['longitude'].mean(),
-    zoom=1,
-    pitch=0,
-)
-
-# Render the pydeck map with tooltip
-r = pdk.Deck(
-    layers=[layer],
-    initial_view_state=view_state,
-    map_style='mapbox://styles/mapbox/light-v9',
-    tooltip=tooltip
-)
-
-# Display the map in Streamlit
-st.pydeck_chart(r)
-
-
+    # Display the map in Streamlit
+    st.pydeck_chart(r)
