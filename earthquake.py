@@ -60,7 +60,7 @@ def render_map(df):
     r = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
-        map_style= 'mapbox://styles/mapbox/outdoors-v11                                           #'mapbox://styles/mapbox/light-v9'
+        map_style= 'mapbox://styles/mapbox/outdoors-v11                                         
     )
 
     # Display the map in Streamlit
