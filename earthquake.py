@@ -38,6 +38,8 @@ def render_map(df):
     if df.empty:
         st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
         st.warning('No earthquake data available for the selected date range.')
+    if start_day>end_date:
+        st.warning('Start date should be earlier than the end date.')
         return
     # Define the pydeck layer
     layer = pdk.Layer(
