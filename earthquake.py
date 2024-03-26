@@ -8,11 +8,13 @@ from sqlalchemy import create_engine
 st.title('Earthquake Data Viewer')
 
 # Date input
-start_date = st.date_input('Start date')
-end_date = st.date_input('End date')
+start_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+-----------------------------------------------------
+#added line
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
-    
+#------------------------------------------------
 # Function to make API call
 def get_data(start_date, end_date):
     url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
