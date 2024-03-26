@@ -69,8 +69,9 @@ def render_map(df):
     st.pydeck_chart(r)
     
     
-start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1))
-end_date = st.date_input('End date', value=datetime.now())
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1),  max_value=datetime.now()) 
+                          current_date
+end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2020, 1, 1),  max_value=datetime.now())
 
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
