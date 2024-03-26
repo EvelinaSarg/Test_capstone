@@ -35,7 +35,7 @@ def extract_data(data):
 def render_map(df):
     if df.empty:
         st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11',
-                       initial_view_state=pdk.ViewState(latitude=37.76, longitude=-122.4, zoom=10))
+                       initial_view_state=pdk.ViewState(latitude=37.76, longitude=-122.4, zoom=10)))
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
