@@ -39,7 +39,7 @@ def render_map(df):
         return
     # Define the pydeck layer
     layer = pdk.Layer(
-        "HeatmapLayer",
+        "ScatterplotLayer",
         data=df,
         get_position='[longitude, latitude]',
         get_radius='magnitude * 50000',  # Adjust the size based on magnitude
