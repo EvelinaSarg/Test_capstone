@@ -74,18 +74,14 @@ def render_map(df):
     
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
 end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
-
-if (end_date - start_date).days > 50:
-    st.error('The date range must not exceed 50 days.')
-else:
-    # Fetch data and prepare the map
-    data = get_data(start_date, end_date)
-    earthquakes = extract_data(data)
-    df = pd.DataFrame(earthquakes)
-    render_map(df)                           # Render the map on first load
+# Fetch data and prepare the map
+data = get_data(start_date, end_date)
+earthquakes = extract_data(data)
+df = pd.DataFrame(earthquakes)
+render_map(df)                           # Render the map on first load
 
 # Button to update the map based on new input
-if st.button('Update Map'):
+if st.button('Update Map'):                              error handling
     if (end_date - start_date).days <= 50 and start_date!=end_date:
         data = get_data(start_date, end_date)
         earthquakes = extract_data(data)
