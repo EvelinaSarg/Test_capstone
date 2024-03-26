@@ -43,6 +43,6 @@ if st.button('Show Data'):
         get_radius='[magnitude * 10000]',
     )
 
-    st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state))
+    st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state,  map_style=None))
 
 
